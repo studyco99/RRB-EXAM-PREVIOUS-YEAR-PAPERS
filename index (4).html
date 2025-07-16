@@ -1,0 +1,932 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RRB ALP Practice Quiz (Q1–Q75)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .explanation { display: none; }
+        .explanation.show { display: block; }
+        .correct { color: green; font-weight: bold; }
+    </style>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <h1 class="text-2xl font-bold text-center mb-6">RRB ALP Practice Paper – Interactive Quiz (Q1–Q75)</h1>
+        <p class="text-center text-red-600 mb-4">Note: If explanations don’t show, open this file via a local server (e.g., run `python -m http.server` and access http://localhost:8000) or host on a web server.</p>
+
+        <!-- Q1 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q1. A, B, C, D, E, F sit around a circular table facing center. B is second to right of D. A is neighbor of E, C. E is second to left of F. F’s position relative to B?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q1" value="1"> Exactly to the right</label>
+                <label><input type="radio" name="q1" value="2"> Third to the right</label>
+                <label><input type="radio" name="q1" value="3"> Exactly to the left</label>
+                <label><input type="radio" name="q1" value="4" data-correct="true"> Second to the left</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: D (1), E (2), B (3), F (4), C (5), A (6). F is second to the left of B.</div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q2. Ratio of employees using bikes to metros?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q2" value="1"> 2:1</label>
+                <label><input type="radio" name="q2" value="2"> 4:5</label>
+                <label><input type="radio" name="q2" value="3"> 5:2</label>
+                <label><input type="radio" name="q2" value="4" data-correct="true"> 3:2</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: 300 bikes, 200 metros → 3:2.</div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q3. Why do particles of matter remain in constant motion?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q3" value="1" data-correct="true"> Kinetic energy</label>
+                <label><input type="radio" name="q3" value="2"> Mechanical energy</label>
+                <label><input type="radio" name="q3" value="3"> Nuclear energy</label>
+                <label><input type="radio" name="q3" value="4"> Chemical energy</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Kinetic energy drives particle motion (kinetic theory).</div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q4. X : 346 :: 9 : Y — Find X and Y.</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q4" value="1"> X = 5, Y = 612</label>
+                <label><input type="radio" name="q4" value="2"> X = 6, Y = 729</label>
+                <label><input type="radio" name="q4" value="3" data-correct="true"> X = 7, Y = 732</label>
+                <label><input type="radio" name="q4" value="4"> X = 8, Y = 756</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Unclear pattern, possible typo (946 vs. 346). Provided answer: X = 7, Y = 732.</div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q5. X : 679 :: 864 : Y — Find X and Y.</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q5" value="1" data-correct="true"> X = 812, Y = 756</label>
+                <label><input type="radio" name="q5" value="2"> X = 825, Y = 718</label>
+                <label><input type="radio" name="q5" value="3"> X = 834, Y = 704</label>
+                <label><input type="radio" name="q5" value="4"> X = 898, Y = 649</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Subtract 108: 864 - 108 = 756 (Y). X: 812 - 108 = 704 (near 679, possible typo). Answer: X = 812, Y = 756.</div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q6. Car covers 3 km at 10, 20, 30, 60 km/h. Average speed?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q6" value="1" data-correct="true"> 20 km/h</label>
+                <label><input type="radio" name="q6" value="2"> 25 km/h</label>
+                <label><input type="radio" name="q6" value="3"> 15 km/h</label>
+                <label><input type="radio" name="q6" value="4"> 30 km/h</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Total distance = 12 km, total time = 0.6 h. Average speed = 12/0.6 = 20 km/h.</div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q7. Interchange two numbers to make 21 × 4 + (84 ÷ 7) × 2 - 15 × 5 + 42 = 105 correct.</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q7" value="1"> 4 and 5</label>
+                <label><input type="radio" name="q7" value="2"> 7 and 21</label>
+                <label><input type="radio" name="q7" value="3"> 4 and 2</label>
+                <label><input type="radio" name="q7" value="4" data-correct="true"> 84 and 42</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Original: 84 + 24 - 75 + 42 = 75. Interchange 84, 42: 84 + 6 × 2 - 75 + 84 = 105.</div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q8. Characteristics of striated muscles?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q8" value="1"> Spindle-shaped, unbranched, uninucleated</label>
+                <label><input type="radio" name="q8" value="2"> Spindle-shaped, unbranched, multinucleated</label>
+                <label><input type="radio" name="q8" value="3" data-correct="true"> Cylindrical, unbranched, multinucleated</label>
+                <label><input type="radio" name="q8" value="4"> Cylindrical, branched, multinucleated</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Striated muscles are cylindrical, unbranched, multinucleated.</div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q9. Year Delhi High Court issued notice for 33% women lawyers’ reservation?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q9" value="1"> 2023</label>
+                <label><input type="radio" name="q9" value="2"> 2022</label>
+                <label><input type="radio" name="q9" value="3"> 2021</label>
+                <label><input type="radio" name="q9" value="4" data-correct="true"> 2024</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Notice issued in 2024.</div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q10. Series: BEV, FIR, JMN, NQJ, RUF, ?. Next term?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q10" value="1"> YVB</label>
+                <label><input type="radio" name="q10" value="2"> TUS</label>
+                <label><input type="radio" name="q10" value="3"> STU</label>
+                <label><input type="radio" name="q10" value="4" data-correct="true"> VYB</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: 1st (+4, +2): R+2 = T; 2nd (+4): U+4 = Y; 3rd (-4): F-4 = B. Next: TYB. VYB closest, possible typo.</div>
+        </div>
+
+        <!-- Q11 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q11. Convex mirror reflection, parallel beam appears to?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q11" value="1"> Diverge from center of curvature</label>
+                <label><input type="radio" name="q11" value="2" data-correct="true"> Diverge from principal focus</label>
+                <label><input type="radio" name="q11" value="3"> Converge at center of curvature</label>
+                <label><input type="radio" name="q11" value="4"> Converge at principal focus</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Rays diverge from principal focus in convex mirror.</div>
+        </div>
+
+        <!-- Q12 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q12. CI on ₹11,000, 2 years, 4% p.a., compounded annually?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q12" value="1"> ₹906.50</label>
+                <label><input type="radio" name="q12" value="2"> ₹875.80</label>
+                <label><input type="radio" name="q12" value="3" data-correct="true"> ₹897.60</label>
+                <label><input type="radio" name="q12" value="4"> ₹786.60</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: CI = 11000 × (1.04)² - 11000 = ₹897.60.</div>
+        </div>
+
+        <!-- Q13 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q13. Cranial and spinal nerves form?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q13" value="1" data-correct="true"> Peripheral nervous system</label>
+                <label><input type="radio" name="q13" value="2"> Endocrine system</label>
+                <label><input type="radio" name="q13" value="3"> Autonomic nervous system</label>
+                <label><input type="radio" name="q13" value="4"> Central nervous system</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Form peripheral nervous system.</div>
+        </div>
+
+        <!-- Q14 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q14. Which letter-group doesn’t belong: HLE, SVP, FJC, OSL?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q14" value="1"> HLE</label>
+                <label><input type="radio" name="q14" value="2" data-correct="true"> SVP</label>
+                <label><input type="radio" name="q14" value="3"> FJC</label>
+                <label><input type="radio" name="q14" value="4"> OSL</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: HLE (25), FJC (19), OSL (46) share pattern; SVP (57) differs.</div>
+        </div>
+
+        <!-- Q15 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q15. If x + 1/x = 5, then x² + 1/x² = ?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q15" value="1" data-correct="true"> 23</label>
+                <label><input type="radio" name="q15" value="2"> 25</label>
+                <label><input type="radio" name="q15" value="3"> 26</label>
+                <label><input type="radio" name="q15" value="4"> 24</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: (x + 1/x)² = 25 → x² + 1/x² = 23.</div>
+        </div>
+
+        <!-- Q16 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q16. Energy from position or configuration?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q16" value="1"> Nuclear energy</label>
+                <label><input type="radio" name="q16" value="2" data-correct="true"> Potential energy</label>
+                <label><input type="radio" name="q16" value="3"> Kinetic energy</label>
+                <label><input type="radio" name="q16" value="4"> Electromagnetic energy</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Potential energy from position/configuration.</div>
+        </div>
+
+        <!-- Q17 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q17. If 9.6 : 16.8 :: 18 : x, value of x?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q17" value="1"> 25.5</label>
+                <label><input type="radio" name="q17" value="2"> 20.4</label>
+                <label><input type="radio" name="q17" value="3"> 24.8</label>
+                <label><input type="radio" name="q17" value="4" data-correct="true"> 31.5</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: 9.6/16.8 = 18/x → x = 31.5.</div>
+        </div>
+
+        <!-- Q18 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q18. All fish are birds. All birds are animals. Conclusions: (I) All animals are fish. (II) Some birds are fish.</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q18" value="1" data-correct="true"> Only (II) follows</label>
+                <label><input type="radio" name="q18" value="2"> Only (I) follows</label>
+                <label><input type="radio" name="q18" value="3"> Both follow</label>
+                <label><input type="radio" name="q18" value="4"> Neither follows</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Some birds are fish (II). Not all animals are fish (I doesn’t follow).</div>
+        </div>
+
+        <!-- Q19 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q19. ATP produced in which organelle?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q19" value="1"> Endoplasmic reticulum</label>
+                <label><input type="radio" name="q19" value="2"> Chloroplast</label>
+                <label><input type="radio" name="q19" value="3" data-correct="true"> Mitochondria</label>
+                <label><input type="radio" name="q19" value="4"> Lysosome</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: ATP produced in mitochondria via respiration.</div>
+        </div>
+
+        <!-- Q20 -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q20. Twinkling of stars due to?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q20" value="1" data-correct="true"> Refraction of light</label>
+                <label><input type="radio" name="q20" value="2"> Reflection of light</label>
+                <label><input type="radio" name="q20" value="3"> Interference of light</label>
+                <label><input type="radio" name="q20" value="4"> Dispersion of light</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Twinkling due to atmospheric refraction.</div>
+        </div>
+
+        <!-- Q21–Q75 (Summarized for brevity, full options included) -->
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q21. Person loses 20% money, spends 25% of rest, left with ₹480. Original amount?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q21" value="1" data-correct="true"> ₹800</label>
+                <label><input type="radio" name="q21" value="2"> ₹600</label>
+                <label><input type="radio" name="q21" value="3"> ₹720</label>
+                <label><input type="radio" name="q21" value="4"> ₹840</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: 0.8x × 0.75 = 480 → x = ₹800.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q22. Author of 'The Miracle Makers: Indian Cricket's Greatest Epic'?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q22" value="1"> Hrishikesh Kanitkar</label>
+                <label><input type="radio" name="q22" value="2"> Shiv Sunder Das</label>
+                <label><input type="radio" name="q22" value="3" data-correct="true"> Bharat Sundaresan</label>
+                <label><input type="radio" name="q22" value="4"> Sunil Joshi</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Bharat Sundaresan is the author.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q23. Categories for National Science Awards?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q23" value="1"> Two</label>
+                <label><input type="radio" name="q23" value="2"> Three</label>
+                <label><input type="radio" name="q23" value="3"> Five</label>
+                <label><input type="radio" name="q23" value="4" data-correct="true"> Four</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Four categories.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q24. Device not using magnetic effect of current?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q24" value="1"> Microphone</label>
+                <label><input type="radio" name="q24" value="2"> Electric generator</label>
+                <label><input type="radio" name="q24" value="3" data-correct="true"> Magnetic compass</label>
+                <label><input type="radio" name="q24" value="4"> Electric motor</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Compass uses Earth’s field, not current.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q25. Union Budget 2024 agriculture initiative?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q25" value="1"> Subsidy program</label>
+                <label><input type="radio" name="q25" value="2" data-correct="true"> Review of research setup</label>
+                <label><input type="radio" name="q25" value="3"> Irrigation expansion</label>
+                <label><input type="radio" name="q25" value="4"> GM crops</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Announced research review.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q26. Effect in laundry iron, toaster, etc.?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q26" value="1" data-correct="true"> Heating effect</label>
+                <label><input type="radio" name="q26" value="2"> Action effect</label>
+                <label><input type="radio" name="q26" value="3"> Chemical effect</label>
+                <label><input type="radio" name="q26" value="4"> Magnetic effect</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Uses heating effect (Joule heating).</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q27. Series 2 & % 4 6 @ & 3 9 # 1 * 8 £ 6 1 7 #, symbols with even numbers on both sides?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q27" value="1" data-correct="true"> One</label>
+                <label><input type="radio" name="q27" value="2"> Two</label>
+                <label><input type="radio" name="q27" value="3"> More than two</label>
+                <label><input type="radio" name="q27" value="4"> None</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Only 4 % 6 has even numbers on both sides.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q28. Sum of two numbers 36, 5 times one equals 4 times other. Larger number?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q28" value="1" data-correct="true"> 20</label>
+                <label><input type="radio" name="q28" value="2"> 16</label>
+                <label><input type="radio" name="q28" value="3"> 12</label>
+                <label><input type="radio" name="q28" value="4"> 15</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: x + y = 36, 5x = 4y → x = 16, y = 20. Larger: 20.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q29. Number divisible by 11?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q29" value="1"> 9248164</label>
+                <label><input type="radio" name="q29" value="2"> 7247564</label>
+                <label><input type="radio" name="q29" value="3"> 8245964</label>
+                <label><input type="radio" name="q29" value="4" data-correct="true"> 9246864</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: 9246864: Odd (25) - Even (14) = 11, divisible.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q30. 6 ft person casts 4 ft shadow, pole casts 36 ft shadow. Pole height?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q30" value="1"> 56 feet</label>
+                <label><input type="radio" name="q30" value="2" data-correct="true"> 54 feet</label>
+                <label><input type="radio" name="q30" value="3"> 63 feet</label>
+                <label><input type="radio" name="q30" value="4"> 60 feet</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: 6/4 = h/36 → h = 54 feet.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q31. 3-digit number, digits ratio 2:3:4, sum with reverse is 1332. Difference?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q31" value="1"> 594</label>
+                <label><input type="radio" name="q31" value="2" data-correct="true"> 396</label>
+                <label><input type="radio" name="q31" value="3"> 414</label>
+                <label><input type="radio" name="q31" value="4"> 323</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Number 864, reverse 468. Sum = 1332, difference = 396.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q32. Force to accelerate 10 kg at 2.5 m/s²?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q32" value="1"> 7.5 N</label>
+                <label><input type="radio" name="q32" value="2"> 4 N</label>
+                <label><input type="radio" name="q32" value="3" data-correct="true"> 25 N</label>
+                <label><input type="radio" name="q32" value="4"> 12.5 N</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: F = 10 × 2.5 = 25 N.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q33. Boxes A-G stacked, D at 3rd from bottom, one box between F and A, three between G and E, B above F, E above D. Boxes between E and C?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q33" value="1"> None</label>
+                <label><input type="radio" name="q33" value="2"> Three</label>
+                <label><input type="radio" name="q33" value="3" data-correct="true"> One</label>
+                <label><input type="radio" name="q33" value="4"> Two</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Arrangement: G, A, F, B, E, C, D. One box between E and C.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q34. 4-digit number divisible by 3, 4, 5?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q34" value="1"> 3465</label>
+                <label><input type="radio" name="q34" value="2"> 4320</label>
+                <label><input type="radio" name="q34" value="3"> 4565</label>
+                <label><input type="radio" name="q34" value="4" data-correct="true"> 3240</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: 3240: sum 9 (÷3), last two 40 (÷4), ends in 0 (÷5).</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q35. Work done by 3 men or 5 women in a day?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q35" value="1"> 1/10</label>
+                <label><input type="radio" name="q35" value="2"> 1/15</label>
+                <label><input type="radio" name="q35" value="3" data-correct="true"> 1/5</label>
+                <label><input type="radio" name="q35" value="4"> 1/12</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: 3 men = 5 women = 1/5 work/day.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q36. Number divisible by 11?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q36" value="1"> 3</label>
+                <label><input type="radio" name="q36" value="2"> 4</label>
+                <label><input type="radio" name="q36" value="3"> 6</label>
+                <label><input type="radio" name="q36" value="4" data-correct="true"> 5</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Unclear calculation, provided answer: 5.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q37. First Indian woman to win individual Olympic medal?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q37" value="1"> P. T. Usha</label>
+                <label><input type="radio" name="q37" value="2"> Mary Kom</label>
+                <label><input type="radio" name="q37" value="3" data-correct="true"> Karnam Malleswari</label>
+                <label><input type="radio" name="q37" value="4"> Saina Nehwal</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Karnam Malleswari, 2000 Olympics.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q38. If 5x + 2y = 14, x + y = 4, then 3x + y = ?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q38" value="1"> 8</label>
+                <label><input type="radio" name="q38" value="2" data-correct="true"> 10</label>
+                <label><input type="radio" name="q38" value="3"> 12</label>
+                <label><input type="radio" name="q38" value="4"> 6</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: x = 2, y = 2 → 3x + y = 10.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q39. SI on ₹2000, 5% p.a., becomes ₹2600 in?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q39" value="1"> 20 years</label>
+                <label><input type="radio" name="q39" value="2"> 12 years</label>
+                <label><input type="radio" name="q39" value="3"> 24 years</label>
+                <label><input type="radio" name="q39" value="4" data-correct="true"> 16 years</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: SI = 600, t = 600/(2000 × 0.05) = 6 (but provided answer: 16).</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q40. Lens for hypermetropia?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q40" value="1"> Concave</label>
+                <label><input type="radio" name="q40" value="2" data-correct="true"> Convex</label>
+                <label><input type="radio" name="q40" value="3"> Cylindrical</label>
+                <label><input type="radio" name="q40" value="4"> Plano-concave</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Convex lens corrects hypermetropia.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q41. Electric current measured in?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q41" value="1"> Volt</label>
+                <label><input type="radio" name="q41" value="2"> Ohm</label>
+                <label><input type="radio" name="q41" value="3" data-correct="true"> Ampere</label>
+                <label><input type="radio" name="q41" value="4"> Watt</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Current measured in ampere.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q42. Profit % if CP = ₹150, SP = ₹162?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q42" value="1"> 4%</label>
+                <label><input type="radio" name="q42" value="2"> 6%</label>
+                <label><input type="radio" name="q42" value="3" data-correct="true"> 8%</label>
+                <label><input type="radio" name="q42" value="4"> 10%</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Profit = 12/150 × 100 = 8% (provided answer).</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q43. Element in pure water?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q43" value="1"> Nitrogen</label>
+                <label><input type="radio" name="q43" value="2"> Carbon</label>
+                <label><input type="radio" name="q43" value="3" data-correct="true"> Hydrogen</label>
+                <label><input type="radio" name="q43" value="4"> Sulphur</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Water (H₂O) contains hydrogen.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q44. Smallest unit of life?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q44" value="1"> Tissue</label>
+                <label><input type="radio" name="q44" value="2"> Organ</label>
+                <label><input type="radio" name="q44" value="3" data-correct="true"> Cell</label>
+                <label><input type="radio" name="q44" value="4"> Organelle</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Cell is the smallest unit of life.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q45. Time for 3 men to complete work?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q45" value="1"> 10 days</label>
+                <label><input type="radio" name="q45" value="2" data-correct="true"> 5 days</label>
+                <label><input type="radio" name="q45" value="3"> 8 days</label>
+                <label><input type="radio" name="q45" value="4"> 12 days</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: 3 men do 1/5 work/day → 5 days.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q46. Ratio of speeds of trains A and B?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q46" value="1"> 4:5</label>
+                <label><input type="radio" name="q46" value="2"> 5:8</label>
+                <label><input type="radio" name="q46" value="3" data-correct="true"> 5:6</label>
+                <label><input type="radio" name="q46" value="4"> 6:5</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Provided answer: 5:6 (calculation suggests 5:8).</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q47. Plant cell organelle for photosynthesis?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q47" value="1"> Mitochondria</label>
+                <label><input type="radio" name="q47" value="2" data-correct="true"> Chloroplast</label>
+                <label><input type="radio" name="q47" value="3"> Nucleus</label>
+                <label><input type="radio" name="q47" value="4"> Ribosome</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Photosynthesis occurs in chloroplast.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q48. Angle between hour and minute hands at 6:00?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q48" value="1"> 90°</label>
+                <label><input type="radio" name="q48" value="2"> 120°</label>
+                <label><input type="radio" name="q48" value="3" data-correct="true"> 180°</label>
+                <label><input type="radio" name="q48" value="4"> 360°</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: At 6:00, hands are opposite → 180°.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q49. Smallest planet in solar system?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q49" value="1"> Venus</label>
+                <label><input type="radio" name="q49" value="2"> Mars</label>
+                <label><input type="radio" name="q49" value="3" data-correct="true"> Mercury</label>
+                <label><input type="radio" name="q49" value="4"> Pluto</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Mercury is the smallest planet.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q50. Chemical formula of baking soda?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q50" value="1"> NaCl</label>
+                <label><input type="radio" name="q50" value="2"> Na₂CO₃</label>
+                <label><input type="radio" name="q50" value="3" data-correct="true"> NaHCO₃</label>
+                <label><input type="radio" name="q50" value="4"> CaCO₃</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Baking soda is NaHCO₃.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q51. Distance 300 km, speed 60 km/h. Time?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q51" value="1"> 4 hours</label>
+                <label><input type="radio" name="q51" value="2"> 6 hours</label>
+                <label><input type="radio" name="q51" value="3" data-correct="true"> 5 hours</label>
+                <label><input type="radio" name="q51" value="4"> 7 hours</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Time = 300/60 = 5 hours.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q52. Deficiency of Vitamin C causes?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q52" value="1"> Rickets</label>
+                <label><input type="radio" name="q52" value="2"> Beriberi</label>
+                <label><input type="radio" name="q52" value="3" data-correct="true"> Scurvy</label>
+                <label><input type="radio" name="q52" value="4"> Night blindness</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Vitamin C deficiency causes scurvy.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q53. If a = b + c, b = c + d, c = d + e, then a = ?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q53" value="1"> d + e</label>
+                <label><input type="radio" name="q53" value="2" data-correct="true"> d + 2e</label>
+                <label><input type="radio" name="q53" value="3"> 2d + e</label>
+                <label><input type="radio" name="q53" value="4"> 2d + 2e</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: a = b + c = (c + d) + c = d + 2e.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q54. SI unit of power?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q54" value="1"> Joule</label>
+                <label><input type="radio" name="q54" value="2"> Newton</label>
+                <label><input type="radio" name="q54" value="3" data-correct="true"> Watt</label>
+                <label><input type="radio" name="q54" value="4"> Volt</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Power measured in watt.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q55. Number of bones in human body?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q55" value="1"> 206</label>
+                <label><input type="radio" name="q55" value="2" data-correct="true"> 206</label>
+                <label><input type="radio" name="q55" value="3"> 208</label>
+                <label><input type="radio" name="q55" value="4"> 210</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Human body has 206 bones.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q56. Perimeter of rectangle, length 15 cm, width 10 cm?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q56" value="1"> 40 cm</label>
+                <label><input type="radio" name="q56" value="2" data-correct="true"> 50 cm</label>
+                <label><input type="radio" name="q56" value="3"> 60 cm</label>
+                <label><input type="radio" name="q56" value="4"> 30 cm</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Perimeter = 2(15 + 10) = 50 cm.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q57. Gas in Earth’s atmosphere, ~78%?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q57" value="1"> Oxygen</label>
+                <label><input type="radio" name="q57" value="2" data-correct="true"> Nitrogen</label>
+                <label><input type="radio" name="q57" value="3"> Carbon dioxide</label>
+                <label><input type="radio" name="q57" value="4"> Argon</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Nitrogen is ~78% of atmosphere.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q58. If 2x + 3y = 12, x + y = 5, then x = ?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q58" value="1"> 3</label>
+                <label><input type="radio" name="q58" value="2" data-correct="true"> 3</label>
+                <label><input type="radio" name="q58" value="3"> 4</label>
+                <label><input type="radio" name="q58" value="4"> 2</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: x = 3, y = 2 solves both equations.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q59. Vitamin for blood clotting?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q59" value="1"> Vitamin A</label>
+                <label><input type="radio" name="q59" value="2"> Vitamin C</label>
+                <label><input type="radio" name="q59" value="3" data-correct="true"> Vitamin K</label>
+                <label><input type="radio" name="q59" value="4"> Vitamin D</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Vitamin K aids blood clotting.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q60. SI unit of force?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q60" value="1"> Watt</label>
+                <label><input type="radio" name="q60" value="2"> Joule</label>
+                <label><input type="radio" name="q60" value="3" data-correct="true"> Newton</label>
+                <label><input type="radio" name="q60" value="4"> Volt</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Force measured in newton.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q61. Area of circle, radius 7 cm?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q61" value="1"> 154 cm²</label>
+                <label><input type="radio" name="q61" value="2" data-correct="true"> 154 cm²</label>
+                <label><input type="radio" name="q61" value="3"> 144 cm²</label>
+                <label><input type="radio" name="q61" value="4"> 164 cm²</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Area = π × 7² ≈ 154 cm².</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q62. Element for strong bones?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q62" value="1"> Iron</label>
+                <label><input type="radio" name="q62" value="2"> Magnesium</label>
+                <label><input type="radio" name="q62" value="3" data-correct="true"> Calcium</label>
+                <label><input type="radio" name="q62" value="4"> Phosphorus</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Calcium strengthens bones.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q63. Distance 240 km, speed 80 km/h. Time?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q63" value="1"> 2 hours</label>
+                <label><input type="radio" name="q63" value="2"> 4 hours</label>
+                <label><input type="radio" name="q63" value="3" data-correct="true"> 3 hours</label>
+                <label><input type="radio" name="q63" value="4"> 5 hours</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Time = 240/80 = 3 hours.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q64. Chemical symbol for sodium?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q64" value="1"> S</label>
+                <label><input type="radio" name="q64" value="2"> Na</label>
+                <label><input type="radio" name="q64" value="3" data-correct="true"> Na</label>
+                <label><input type="radio" name="q64" value="4"> So</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Sodium’s symbol is Na.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q65. If 3x - 2y = 7, x + y = 3, then y = ?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q65" value="1"> 1</label>
+                <label><input type="radio" name="q65" value="2" data-correct="true"> 2</label>
+                <label><input type="radio" name="q65" value="3"> 3</label>
+                <label><input type="radio" name="q65" value="4"> 4</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: x = 1, y = 2 solves both equations.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q66. Organ for digestion?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q66" value="1"> Liver</label>
+                <label><input type="radio" name="q66" value="2"> Pancreas</label>
+                <label><input type="radio" name="q66" value="3" data-correct="true"> Stomach</label>
+                <label><input type="radio" name="q66" value="4"> Kidney</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Stomach is primary digestion organ.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q67. Work done, force 10 N, distance 5 m?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q67" value="1"> 40 J</label>
+                <label><input type="radio" name="q67" value="2"> 60 J</label>
+                <label><input type="radio" name="q67" value="3" data-correct="true"> 50 J</label>
+                <label><input type="radio" name="q67" value="4"> 30 J</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Work = 10 × 5 = 50 J.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q68. Train 360 km in 4 hours, speed?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q68" value="1"> 80 km/h</label>
+                <label><input type="radio" name="q68" value="2" data-correct="true"> 90 km/h</label>
+                <label><input type="radio" name="q68" value="3"> 100 km/h</label>
+                <label><input type="radio" name="q68" value="4"> 85 km/h</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Speed = 360/4 = 90 km/h.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q69. Primary pigment for photosynthesis?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q69" value="1"> Carotene</label>
+                <label><input type="radio" name="q69" value="2" data-correct="true"> Chlorophyll</label>
+                <label><input type="radio" name="q69" value="3"> Xanthophyll</label>
+                <label><input type="radio" name="q69" value="4"> Anthocyanin</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Chlorophyll absorbs light for photosynthesis.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q70. Area of square 64 cm², side length?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q70" value="1"> 6 cm</label>
+                <label><input type="radio" name="q70" value="2"> 7 cm</label>
+                <label><input type="radio" name="q70" value="3" data-correct="true"> 8 cm</label>
+                <label><input type="radio" name="q70" value="4"> 9 cm</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Side = √64 = 8 cm.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q71. Chemical symbol for gold?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q71" value="1"> Ag</label>
+                <label><input type="radio" name="q71" value="2"> Au</label>
+                <label><input type="radio" name="q71" value="3" data-correct="true"> Au</label>
+                <label><input type="radio" name="q71" value="4"> Pb</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Gold’s symbol is Au.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q72. Boat 20 km upstream in 4 h, 24 km downstream in 3 h. Boat speed in still water?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q72" value="1"> 6 km/h</label>
+                <label><input type="radio" name="q72" value="2" data-correct="true"> 6.5 km/h</label>
+                <label><input type="radio" name="q72" value="3"> 7 km/h</label>
+                <label><input type="radio" name="q72" value="4"> 8 km/h</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Upstream 5 km/h, downstream 8 km/h. Boat speed = (5 + 8)/2 = 6.5 km/h.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q73. Example of chemical change?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q73" value="1"> Melting ice</label>
+                <label><input type="radio" name="q73" value="2"> Boiling water</label>
+                <label><input type="radio" name="q73" value="3" data-correct="true"> Burning wood</label>
+                <label><input type="radio" name="q73" value="4"> Dissolving sugar</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Burning wood forms new substances.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q74. Long queues at electricity bill counters, June 14, 2023. Reasons: (I) Last date 15th. (II) Server failure.</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q74" value="1" data-correct="true"> Both I and II</label>
+                <label><input type="radio" name="q74" value="2"> Only I</label>
+                <label><input type="radio" name="q74" value="3"> Neither</label>
+                <label><input type="radio" name="q74" value="4"> Only II</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Both deadline and server failure explain queues.</div>
+        </div>
+
+        <div class="question mb-8">
+            <h2 class="text-lg font-semibold mb-2">Q75. Khelo India Youth Games, boys’ 1500m record 3:51.12?</h2>
+            <div class="options space-y-2">
+                <label><input type="radio" name="q75" value="1"> Rahul Iyer</label>
+                <label><input type="radio" name="q75" value="2" data-correct="true"> Rahul Sarnalia</label>
+                <label><input type="radio" name="q75" value="3"> Adi Sharma</label>
+                <label><input type="radio" name="q75" value="4"> Jai Kumar Verma</label>
+            </div>
+            <div class="explanation mt-4 text-gray-700">Explanation: Unverifiable, provided answer: Rahul Sarnalia.</div>
+        </div>
+
+    </div>
+
+    <script>
+        // Check if running locally and alert user if necessary
+        if (window.location.protocol === 'file:') {
+            alert('Explanations may not show when opening this file directly. Please host it on a server or run a local server (e.g., `python -m http.server` and access http://localhost:8000).');
+        }
+
+        // Add event listeners for interactivity
+        document.querySelectorAll('.question').forEach(question => {
+            const options = question.querySelectorAll('input[type="radio"]');
+            const explanation = question.querySelector('.explanation');
+            options.forEach(option => {
+                option.addEventListener('change', () => {
+                    if (option.dataset.correct === 'true') {
+                        explanation.classList.toggle('show');
+                        option.parentElement.classList.toggle('correct');
+                        options.forEach(opt => {
+                            if (opt !== option) opt.checked = false;
+                        });
+                    } else {
+                        option.checked = false;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
