@@ -1,0 +1,236 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RRB ALP Practice Paper</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .header {
+            margin-bottom: 20px;
+        }
+        .timer {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .question-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .question {
+            margin: 20px 0;
+        }
+        .options label {
+            display: block;
+            margin: 10px 0;
+            text-align: left;
+        }
+        .explanation {
+            display: none;
+            color: #555;
+            font-style: italic;
+            margin-top: 10px;
+        }
+        .navigation button {
+            margin: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .navigation button:hover {
+            background-color: #0056b3;
+        }
+        .navigation button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .powered-by {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>RRB ALP Practice Paper (Q1–Q75)</h1>
+        <div class="timer" id="timer">Time: 90:00</div>
+    </div>
+    <div class="question-container" id="question-container">
+        <!-- Questions will be dynamically inserted by JavaScript -->
+    </div>
+    <div class="navigation">
+        <button id="prev-btn" disabled>Previous</button>
+        <button id="explain-btn">Show Explanation</button>
+        <button id="next-btn">Next</button>
+        <button id="submit-btn">Submit</button>
+    </div>
+    <div class="powered-by">
+        Powered by xAI
+    </div>
+
+    <script>
+        // Sample questions (75 total, showing 5 as examples)
+        const questions = [
+            {
+                question: "What is the capital of India?",
+                options: ["A. Mumbai", "B. Delhi", "C. Kolkata", "D. Chennai"],
+                answer: "B",
+                explanation: "Delhi is the capital city of India, serving as the political and administrative center."
+            },
+            {
+                question: "If 2x + 3 = 7, what is the value of x?",
+                options: ["A. 1", "B. 2", "C. 3", "D. 4"],
+                answer: "B",
+                explanation: "Solve: 2x + 3 = 7 => 2x = 4 => x = 2."
+            },
+            {
+                question: "Which of the following is a non-metal?",
+                options: ["A. Iron", "B. Carbon", "C. Aluminum", "D. Copper"],
+                answer: "B",
+                explanation: "Carbon is a non-metal, while the others are metals."
+            },
+            {
+                question: "In a certain code, 'CAT' is written as 'DBU'. How is 'DOG' written in that code?",
+                options: ["A. EPH", "B. FQI", "C. EPI", "D. FQH"],
+                answer: "C",
+                explanation: "Each letter is shifted forward by one in the alphabet: D->E, O->P, G->I. So, DOG becomes EPI."
+            },
+            {
+                question: "In a diesel locomotive, what is the function of the turbocharger?",
+                options: ["A. Cools the engine", "B. Increases air intake", "C. Controls speed", "D. Reduces fuel consumption"],
+                answer: "B",
+                explanation: "A turbocharger increases the air intake to the engine, improving combustion efficiency."
+            }
+            // Placeholder for remaining 70 questions
+            // In a real implementation, add 70 more questions covering General Awareness, Arithmetic, Reasoning, General Science, and Technical Subjects
+        ];
+
+        // Fill remaining questions (placeholder for brevity)
+        for (let i = 6; i <= 75; i++) {
+            questions.push({
+                question: `Sample Question ${i} (Topic: ${i % 5 === 0 ? 'Technical' : i % 4 === 0 ? 'General Science' : i % 3 === 0 ? 'Reasoning' : i % 2 === 0 ? 'Arithmetic' : 'General Awareness'})`,
+                options: ["A. Option 1", "B. Option 2", "C. Option 3", "D. Option 4"],
+                answer: "A",
+                explanation: `Explanation for question ${i}.`
+            });
+        }
+
+        let currentQuestion = 0;
+
+        // Display current question
+        function displayQuestion() {
+            const container = document.getElementById('question-container');
+            const q = questions[currentQuestion];
+            container.innerHTML = `
+                <div class="question">
+                    <h3>Question ${currentQuestion + 1} of 75</h3>
+                    <p>${q.question}</p>
+                    <div class="options">
+                        ${q.options.map(opt => `<label><input type="radio" name="option" value="${opt[0]}"> ${opt}</label>`).join('')}
+                    </div>
+                    <div class="explanation" id="explanation">${q.explanation}</div>
+                </div>
+            `;
+            document.getElementById('prev-btn').disabled = currentQuestion === 0;
+            document.getElementById('next-btn').disabled = currentQuestion === questions.length - 1;
+            document.getElementById('explain-btn').textContent = 'Show Explanation';
+        }
+
+        // Navigation
+        document.getElementById('prev-btn').addEventListener('click', () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                displayQuestion();
+            }
+        });
+
+        document.getElementById('next-btn').addEventListener('click', () => {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                displayQuestion();
+            }
+        });
+
+        document.getElementById('explain-btn').addEventListener('click', () => {
+            const explanation = document.getElementById('explanation');
+            explanation.style.display = explanation.style.display === 'block' ? 'none' : 'block';
+            document.getElementById('explain-btn').textContent = explanation.style.display === 'block' ? 'Hide Explanation' : 'Show Explanation';
+        });
+
+        document.getElementById('submit-btn').addEventListener('click', () => {
+            alert('Practice paper submitted! (Add scoring logic here)');
+        });
+
+        // Timer
+        let timeLeft = 90 * 60; // 90 minutes in seconds
+        const timerElement = document.getElementById('timer');
+        const timer = setInterval(() => {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerElement.textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            timeLeft--;
+            if (timeLeft < 0) {
+                clearInterval(timer);
+                alert('Time is up!');
+                document.getElementById('submit-btn').click();
+            }
+        }, 1000);
+
+        // Initialize
+        displayQuestion();
+    </script>
+</body>
+</html>
